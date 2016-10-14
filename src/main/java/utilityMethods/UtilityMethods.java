@@ -1,4 +1,4 @@
-package testMethods;
+package utilityMethods;
 
 import com.aerospike.client.*;
 import java.text.DateFormat;
