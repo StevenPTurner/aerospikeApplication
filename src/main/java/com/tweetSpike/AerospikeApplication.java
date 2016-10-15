@@ -1,11 +1,12 @@
-package com.example;
+package com.tweetSpike;
 
 
-public class App 
+public class AerospikeApplication
 {
     public static void main( String[] args )
     {
 
     }
+
 
 }
