@@ -52,14 +52,14 @@ public class UserService {
             wPolicy.recordExistsAction = RecordExistsAction.UPDATE;
 
             Key key = new Key("test", "users", username);
-            Bin bin1 = new Bin("username", username);
-            Bin bin2 = new Bin("password", password);
-            Bin bin3 = new Bin("gender", gender);
-            Bin bin4 = new Bin("region", region);
-            Bin bin5 = new Bin("lasttweeted", 0);
-            Bin bin6 = new Bin("tweetcount", 0);
+            Bin binUsername = new Bin("username", username);
+            Bin binPassword = new Bin("password", password);
+            Bin binGender = new Bin("gender", gender);
+            Bin binRegion = new Bin("region", region);
+            Bin binLastTweeted = new Bin("lasttweeted", 0);
+            Bin binTweetCount = new Bin("tweetcount", 0);
 
-            client.put(wPolicy, key, bin1, bin2, bin3, bin4, bin5, bin6);
+            client.put(wPolicy, key, binUsername, binPassword, binGender, binRegion, binLastTweeted, binTweetCount);
 
             System.out.print("\nINFO: User record created!");
         }

@@ -23,23 +23,6 @@ public class UtilityMethods {
         client.close();
     }
 
-    public static String getInput(){
-
-        Scanner user_input = new Scanner(System.in);
-        String input = "";
-        try
-        {
-            input = user_input.nextLine();
-            //user_input.nextLine();
-        }
-        catch(Error e)
-        {
-            System.out.println("lolwot: " + e);
-        }
-
-        return input;
-    }
-
     //dd-MM-dd HH:mm:ss:SSS
     private static String getFormattedDate(String format)
     {
@@ -47,24 +30,5 @@ public class UtilityMethods {
         DateFormat dateFormat = new SimpleDateFormat(format);
         return dateFormat.format(date);
     }
-
-//    String username = "";
-//    String message = "";
-//
-//        do{
-//        System.out.print("Enter your username: ");
-//        username = getInput();
-//        System.out.println();
-//        if (username.equals("exit")) { break; }
-//
-//        do {
-//            System.out.print("Enter your message: ");
-//            message = getInput();
-//            System.out.println();
-//            if (message.equals("logout")) { break; }
-//            aerospikeInsertIntoSet(username, message);
-//        } while (true);
-//
-//    } while (true);
 
 }

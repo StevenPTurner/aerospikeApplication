@@ -35,7 +35,7 @@ public class Tweetspike {
                 // Create instance of UserService
                 UserService us = new UserService(tweetspikeClient, input);
                 // Create instance of TweetService
-                // TweetService ts = new TweetService(client);
+                TweetspikeService ts = new TweetspikeService(tweetspikeClient, input);
                 // Create instance of UtilityService
                 // UtilityService util = new UtilityService(client);
                 // Present options
@@ -58,7 +58,7 @@ public class Tweetspike {
                         case 1:
                             System.out.print("\n********** Your Selection: Create User And A Tweet **********\n");
                             us.createUser();
-                            // ts.createTweet();
+                            ts.createTweet();
                             break;
                         case 2:
                             System.out.print("\n********** Your Selection: Read A User Record **********\n");

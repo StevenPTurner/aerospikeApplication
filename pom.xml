@@ -32,9 +32,9 @@
       <version>[3.0.0,)</version>
     </dependency>
     <dependency>
-      <groupId>org.mindrot</groupId>
-      <artifactId>jbcrypt</artifactId>
-      <version>0.4</version>
+        <groupId>de.svenkubiak</groupId>
+        <artifactId>jBCrypt</artifactId>
+        <version>0.4.1</version>
     </dependency>
   </dependencies>
 
