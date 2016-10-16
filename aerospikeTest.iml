@@ -15,6 +15,6 @@
     <orderEntry type="library" name="Maven: com.aerospike:aerospike-client:3.3.0" level="project" />
     <orderEntry type="library" name="Maven: org.gnu:gnu-crypto:2.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.luaj:luaj-jse:3.0" level="project" />
-    <orderEntry type="library" name="Maven: org.mindrot:jbcrypt:0.3m" level="project" />
+    <orderEntry type="library" name="Maven: org.mindrot:jbcrypt:0.4" level="project" />
   </component>
 </module>

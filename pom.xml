@@ -25,12 +25,17 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.4</version>
-  </dependency>
-  <dependency>
+    </dependency>
+    <dependency>
       <groupId>com.aerospike</groupId>
       <artifactId>aerospike-client</artifactId>
       <version>[3.0.0,)</version>
-  </dependency>
+    </dependency>
+    <dependency>
+      <groupId>org.mindrot</groupId>
+      <artifactId>jbcrypt</artifactId>
+      <version>0.4</version>
+    </dependency>
   </dependencies>
 
   <build>

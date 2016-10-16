@@ -1,4 +1,4 @@
-package com.tweetSpike;
+package com.tweetspike;
 
 import com.aerospike.client.AerospikeClient;
 import com.aerospike.client.AerospikeException;
@@ -8,39 +8,36 @@ import java.util.Scanner;
 
 
 //**
-public class TweetSpike {
-    private AerospikeClient tweetSpikeClient;
+public class Tweetspike {
+    private AerospikeClient tweetspikeClient;
 
-    public TweetSpike(String hostIP, int hostPort)
+    public Tweetspike(String hostIP, int hostPort)
     {
         ClientPolicy cPolicy = new ClientPolicy();
         cPolicy.timeout = 500;
-        tweetSpikeClient = new AerospikeClient(cPolicy, hostIP, hostPort);
+        tweetspikeClient = new AerospikeClient(cPolicy, hostIP, hostPort);
     }
 
     public void menu()
     {
-        Scanner user_input = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
 
         try {
             System.out.println("INFO: Connecting to Aerospike cluster...");
 
             // Establish connection to Aerospike server
 
-            if (tweetSpikeClient == null || !tweetSpikeClient.isConnected()) {
-                System.out.print("\nERROR: Connection to Aerospike cluster failed! Please check the server settings and try again!");
+            if (tweetspikeClient == null || !tweetspikeClient.isConnected()) {
                 System.out.print("\nERROR: Connection to Aerospike cluster failed! Please check the server settings and try again!");
                 //console.readLine();
             } else {
                 System.out.print("\nINFO: Connection to Aerospike cluster succeeded!\n");
-
                 // Create instance of UserService
-                // UserService us = new UserService(client);
+                UserService us = new UserService(tweetspikeClient, input);
                 // Create instance of TweetService
                 // TweetService ts = new TweetService(client);
                 // Create instance of UtilityService
                 // UtilityService util = new UtilityService(client);
-
                 // Present options
                 System.out.print("\nWhat would you like to do:\n");
                 System.out.print("1> Create A User And A Tweet\n");
@@ -53,14 +50,14 @@ public class TweetSpike {
                 System.out.print("0> Exit\n");
                 System.out.print("\nSelect 0-7 and hit enter: ");
 
-                int feature = user_input.nextInt();
-                user_input.nextLine();
+                int feature = input.nextInt();
+                input.nextLine();
 
                 if (feature != 0) {
                     switch (feature) {
                         case 1:
                             System.out.print("\n********** Your Selection: Create User And A Tweet **********\n");
-                            // us.createUser();
+                            us.createUser();
                             // ts.createTweet();
                             break;
                         case 2:
@@ -101,18 +98,14 @@ public class TweetSpike {
                 }
             }
         } catch (AerospikeException e) {
-            System.out.print("AerospikeException - Message: " + e.getMessage()
-                    + "\n");
-            System.out.print("AerospikeException - StackTrace: "
-                    + e + "\n");
+            System.out.print("AerospikeException - Message: " + e.getMessage() + "\n");
+            System.out.print("AerospikeException - StackTrace: " + e + "\n");
         } catch (Exception e) {
             System.out.print("Exception - Message: " + e.getMessage() + "\n");
-            System.out.print("Exception - StackTrace: "
-                    + e + "\n");
+            System.out.print("Exception - StackTrace: " + e + "\n");
         } finally {
-            if (tweetSpikeClient != null && tweetSpikeClient.isConnected()) {
-                // Close Aerospike server connection
-                tweetSpikeClient.close();
+            if (tweetspikeClient != null && tweetspikeClient.isConnected()) {
+                tweetspikeClient.close(); // Close Aerospike server connection
             }
             System.out.print("\n\nINFO: Press any key to exit...\n");
             //console.readLine();
@@ -121,8 +114,8 @@ public class TweetSpike {
 
     //Maybe pass parameters
     protected void finalize() throws Throwable {
-        if (this.tweetSpikeClient != null){
-            this.tweetSpikeClient.close();
+        if (this.tweetspikeClient != null){
+            this.tweetspikeClient.close();
         }
     }
 }
