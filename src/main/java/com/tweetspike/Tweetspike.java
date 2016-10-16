@@ -62,7 +62,7 @@ public class Tweetspike {
                             break;
                         case 2:
                             System.out.print("\n********** Your Selection: Read A User Record **********\n");
-                            // us.getUser();
+                            us.getUser();
                             break;
                         case 3:
                             System.out.print("\n********** Your Selection: Batch Read Tweets For A User **********\n");

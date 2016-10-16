@@ -1,9 +1,6 @@
 package com.tweetspike;
 
-import com.aerospike.client.AerospikeClient;
-import com.aerospike.client.AerospikeException;
-import com.aerospike.client.Bin;
-import com.aerospike.client.Key;
+import com.aerospike.client.*;
 import com.aerospike.client.policy.RecordExistsAction;
 import com.aerospike.client.policy.WritePolicy;
 
@@ -13,14 +10,12 @@ public class UserService {
     private AerospikeClient client;
     private Scanner input;
 
-    public UserService(AerospikeClient client, Scanner input)
-    {
+    public UserService(AerospikeClient client, Scanner input) {
         this.client = client;
         this.input = input;
     }
 
-    public void createUser() throws AerospikeException
-    {
+    public void createUser() throws AerospikeException {
         System.out.print("\n********** Create User **********\n");
 
         String username;
@@ -62,6 +57,35 @@ public class UserService {
             client.put(wPolicy, key, binUsername, binPassword, binGender, binRegion, binLastTweeted, binTweetCount);
 
             System.out.print("\nINFO: User record created!");
+        }
+    }
+
+    public void getUser() throws AerospikeException {
+        Record userRecord = null;
+        Key userKey = null;
+
+        // Get username
+        String username;
+        System.out.print("\nEnter username:");
+        username = input.nextLine();
+
+        if (username != null && username.length() > 0) {
+            // Check if username exists
+            userKey = new Key("test", "users", username);
+            userRecord = client.get(null, userKey);
+            if (userRecord != null) {
+                System.out.print("\nINFO: User record read successfully! Here are the details:\n");
+                System.out.print("Username:   " + userRecord.getValue("username") + "\n");
+                System.out.print("Password:   " + userRecord.getValue("password") + "\n");
+                System.out.print("Gender:     " + userRecord.getValue("gender") + "\n");
+                System.out.print("Region:     " + userRecord.getValue("region") + "\n");
+                System.out.print("Last tweet  " + userRecord.getValue("lasttweeted") + "\n");
+                System.out.print("Tweet count: " + userRecord.getValue("tweetcount") + "\n");
+            } else {
+                System.out.print("ERROR: User record not found!\n");
+            }
+        } else {
+            System.out.print("ERROR: User record not found!\n");
         }
     }
 }
