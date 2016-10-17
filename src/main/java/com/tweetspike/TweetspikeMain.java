@@ -3,13 +3,13 @@ package com.tweetspike;
 
 public class TweetspikeMain
 {
-    String hostIP = "192.168.0.2";
+    String hostIP = "localhost";
     int hostPort = 3000;
     Tweetspike tweetSpike = new Tweetspike(hostIP, hostPort);
 
     public static void main( String[] args ) {
-       TweetspikeMain app = new TweetspikeMain();
-       app.run();
+        TweetspikeMain app = new TweetspikeMain();
+        app.run();
     }
 
     private void run() {

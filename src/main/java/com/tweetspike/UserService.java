@@ -1,10 +1,9 @@
 package com.tweetspike;
 
 import com.aerospike.client.*;
-import com.aerospike.client.policy.BatchPolicy;
-import com.aerospike.client.policy.Policy;
 import com.aerospike.client.policy.RecordExistsAction;
 import com.aerospike.client.policy.WritePolicy;
+import utilityMethods.PasswordHash;
 
 import java.util.Scanner;
 
@@ -33,14 +32,14 @@ public class UserService {
             // Get password
             System.out.print("Enter password for " + username + ":");
             password = input.nextLine();
-
+            String hashedPassword = PasswordHash.genHash(password, PasswordHash.genSalt());
+            
             // Get gender
             System.out.print("Select gender (f or m) for " + username + ":");
             gender = input.nextLine().substring(0, 1);
 
             // Get region
-            System.out.print("Select region (north, south, east or west) for "
-                    + username + ":");
+            System.out.print("Select region (north, south, east or west) for " + username + ":");
             region = input.nextLine().substring(0, 1);
 
 
@@ -50,7 +49,7 @@ public class UserService {
 
             Key key = new Key("test", "users", username);
             Bin binUsername = new Bin("username", username);
-            Bin binPassword = new Bin("password", password);
+            Bin binPassword = new Bin("password", hashedPassword);
             Bin binGender = new Bin("gender", gender);
             Bin binRegion = new Bin("region", region);
             Bin binLastTweeted = new Bin("lasttweeted", 0);
@@ -90,43 +89,5 @@ public class UserService {
         }
     }
 
-    public void batchGetUserTweets() throws AerospikeException {
-        Record userRecord = null;
-        Key userKey = null;
 
-        // Get username
-        String username;
-        System.out.print("\nEnter username:");
-        username = input.nextLine();
-
-        if (username != null && username.length() > 0) {
-            // Check if username exists
-            userKey = new Key("test", "users", username);
-            userRecord = client.get(null, userKey);
-            if (userRecord != null) {
-                // Get how many tweets the user has
-                int tweetCount = userRecord.getInt("tweetcount");
-
-                // Create an array of keys so we can initiate batch read
-                // operation
-                Key[] keys = new Key[tweetCount];
-                for (int i = 0; i < keys.length; i++) {
-                    keys[i] = new Key("test", "tweets",(username + ":" + (i + 1)));
-                }
-
-                System.out.print("\nHere's " + username + "'s tweet(s):\n");
-
-                BatchPolicy policy = new BatchPolicy();
-                // Initiate batch read operation
-                if (keys.length > 0){
-                    Record[] records = client.get(policy, keys);
-                    for (int j = 0; j < records.length; j++) {
-                        System.out.print(records[j].getValue("tweet").toString() + "\n");
-                    }
-                }
-            }
-        } else {
-            System.out.print("ERROR: User record not found!\n");
-        }
-    }
 }

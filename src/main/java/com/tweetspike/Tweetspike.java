@@ -70,7 +70,7 @@ public class Tweetspike {
                             break;
                         case 4:
                             System.out.print("\n********** Your Selection: Batch Read Tweets For A User **********\n");
-                            us.batchGetUserTweets();
+                            ts.batchGetUserTweets();
                             break;
                         case 5:
                             System.out.print("\n********** Your Selection: Scan All Tweets For All Users **********\n");
