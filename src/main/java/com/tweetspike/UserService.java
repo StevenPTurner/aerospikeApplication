@@ -1,6 +1,8 @@
 package com.tweetspike;
 
 import com.aerospike.client.*;
+import com.aerospike.client.policy.BatchPolicy;
+import com.aerospike.client.policy.Policy;
 import com.aerospike.client.policy.RecordExistsAction;
 import com.aerospike.client.policy.WritePolicy;
 
@@ -83,6 +85,46 @@ public class UserService {
                 System.out.print("Tweet count: " + userRecord.getValue("tweetcount") + "\n");
             } else {
                 System.out.print("ERROR: User record not found!\n");
+            }
+        } else {
+            System.out.print("ERROR: User record not found!\n");
+        }
+    }
+
+    public void batchGetUserTweets() throws AerospikeException {
+        Record userRecord = null;
+        Key userKey = null;
+
+        // Get username
+        String username;
+        System.out.print("\nEnter username:");
+        username = input.nextLine();
+
+        if (username != null && username.length() > 0) {
+            // Check if username exists
+            userKey = new Key("test", "users", username);
+            userRecord = client.get(null, userKey);
+            if (userRecord != null) {
+                // Get how many tweets the user has
+                int tweetCount = (Integer) userRecord.getValue("tweetcount");
+
+                // Create an array of keys so we can initiate batch read
+                // operation
+                Key[] keys = new Key[tweetCount];
+                for (int i = 0; i < keys.length; i++) {
+                    keys[i] = new Key("test", "tweets",(username + ":" + (i + 1)));
+                }
+
+                System.out.print("\nHere's " + username + "'s tweet(s):\n");
+
+                BatchPolicy policy = new BatchPolicy();
+                // Initiate batch read operation
+                if (keys.length > 0){
+                    Record[] records = client.get(policy, keys);
+                    for (int j = 0; j < records.length; j++) {
+                        System.out.print(records[j].getValue("tweet").toString() + "\n");
+                    }
+                }
             }
         } else {
             System.out.print("ERROR: User record not found!\n");

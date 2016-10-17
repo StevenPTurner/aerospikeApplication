@@ -31,5 +31,6 @@ public class UtilityMethods {
         return dateFormat.format(date);
     }
     //http://stackoverflow.com/questions/20732612/converting-epoch-in-milliseconds-into-date-and-time-java
+    //https://github.com/aerospike/aerospike-client-java/blob/master/examples/src/com/aerospike/examples/Batch.java
 
 }

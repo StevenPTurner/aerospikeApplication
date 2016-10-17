@@ -40,15 +40,16 @@ public class Tweetspike {
                 // UtilityService util = new UtilityService(client);
                 // Present options
                 System.out.print("\nWhat would you like to do:\n");
-                System.out.print("1> Create A User And A Tweet\n");
-                System.out.print("2> Read A User Record\n");
-                System.out.print("3> Batch Read Tweets For A User\n");
-                System.out.print("4> Scan All Tweets For All Users\n");
-                System.out.print("5> Record UDF -- Update User Password\n");
-                System.out.print("6> Query Tweets By Username And Users By Tweet Count Range\n");
-                System.out.print("7> Stream UDF -- Aggregation Based on Tweet Count By Region\n");
+                System.out.print("1> Create a user account\n");
+                System.out.print("2> Create a tweet\n");
+                System.out.print("3> Read a user record\n");
+                System.out.print("4> Batch read tweets for a user\n");
+                System.out.print("5> Scan all tweets for all users\n");
+                System.out.print("6> Record UDF -- update user password\n");
+                System.out.print("7> Query tweets by username and users by tweet count range\n");
+                System.out.print("8> Stream UDF -- aggregation based on tweet count by region\n");
                 System.out.print("0> Exit\n");
-                System.out.print("\nSelect 0-7 and hit enter: ");
+                System.out.print("\nSelect 0-8 and hit enter: ");
 
                 int feature = input.nextInt();
                 input.nextLine();
@@ -56,31 +57,34 @@ public class Tweetspike {
                 if (feature != 0) {
                     switch (feature) {
                         case 1:
-                            System.out.print("\n********** Your Selection: Create User And A Tweet **********\n");
+                            System.out.print("\n********** Your Selection: Create User **********\n");
                             us.createUser();
-                            ts.createTweet();
                             break;
                         case 2:
+                            System.out.print("\n********** Your Selection: Create a Tweet **********\n");
+                            ts.createTweet();
+                            break;
+                        case 3:
                             System.out.print("\n********** Your Selection: Read A User Record **********\n");
                             us.getUser();
                             break;
-                        case 3:
-                            System.out.print("\n********** Your Selection: Batch Read Tweets For A User **********\n");
-                            // us.batchGetUserTweets();
-                            break;
                         case 4:
+                            System.out.print("\n********** Your Selection: Batch Read Tweets For A User **********\n");
+                            us.batchGetUserTweets();
+                            break;
+                        case 5:
                             System.out.print("\n********** Your Selection: Scan All Tweets For All Users **********\n");
                             // ts.scanAllTweetsForAllUsers();
                             break;
-                        case 5:
+                        case 6:
                             System.out.print("\n********** Your Selection: Record UDF -- Update User Password **********\n");
                             // us.updatePasswordUsingUDF();
                             break;
-                        case 6:
+                        case 7:
                             System.out.print("\n********** Your Selection: Query Tweets By Username And Users By Tweet Count Range **********\n");
                             // ts.queryTweets();
                             break;
-                        case 7:
+                        case 8:
                             System.out.print("\n********** Your Selection: Stream UDF -- Aggregation Based on Tweet Count By Region **********\n");
                             // us.aggregateUsersByTweetCountByRegion();
                             break;

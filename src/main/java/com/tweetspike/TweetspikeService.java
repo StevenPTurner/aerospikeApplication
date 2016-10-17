@@ -35,7 +35,9 @@ public class TweetspikeService {
             userKey = new Key("test", "users", username);
             userRecord = client.get(null, userKey);
             if (userRecord != null) {
-                int nextTweetCount = Integer.parseInt(userRecord.getValue("tweetcount").toString()) + 1;
+                int nextTweetCount = userRecord.getInt("tweetcount") + 1;
+                //nextTweetCount++;
+                System.out.println(nextTweetCount);
                 // Get tweet
                 String tweet;
                 System.out.print("Enter tweet for " + username + ":");
