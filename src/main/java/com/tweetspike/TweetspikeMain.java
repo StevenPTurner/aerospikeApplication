@@ -7,14 +7,12 @@ public class TweetspikeMain
     int hostPort = 3000;
     Tweetspike tweetSpike = new Tweetspike(hostIP, hostPort);
 
-    public static void main( String[] args )
-    {
+    public static void main( String[] args ) {
        TweetspikeMain app = new TweetspikeMain();
        app.run();
     }
 
-    public void run()
-    {
+    private void run() {
         tweetSpike = new Tweetspike(hostIP, hostPort);
         tweetSpike.menu();
     }
