@@ -78,7 +78,6 @@ public class UserService {
             if (userRecord != null) {
                 System.out.print("\nINFO: User record read successfully! Here are the details:\n");
                 System.out.print("Username:   " + userRecord.getValue("username") + "\n");
-                System.out.print("Password:   " + userRecord.getValue("password") + "\n");
                 System.out.print("Gender:     " + userRecord.getValue("gender") + "\n");
                 System.out.print("Region:     " + userRecord.getValue("region") + "\n");
                 System.out.print("Last tweet  " + userRecord.getValue("lasttweeted") + "\n");
@@ -106,7 +105,7 @@ public class UserService {
             userRecord = client.get(null, userKey);
             if (userRecord != null) {
                 // Get how many tweets the user has
-                int tweetCount = (Integer) userRecord.getValue("tweetcount");
+                int tweetCount = userRecord.getInt("tweetcount");
 
                 // Create an array of keys so we can initiate batch read
                 // operation
