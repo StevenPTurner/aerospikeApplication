@@ -1,0 +1,15 @@
+[Is the user signed in]
+  {Yes}
+    Write a Tweet
+    View a user Profile
+    View user Tweets
+  {No}
+    Sign in
+      Enter Password
+        {Correct}
+          Log in
+        {Incorrect}
+          Retry 3 times
+    Create an Account
+    View a user Profile
+    View user Tweets
