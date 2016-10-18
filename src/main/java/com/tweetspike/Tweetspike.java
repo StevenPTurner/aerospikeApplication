@@ -12,14 +12,16 @@ public class Tweetspike {
     private AerospikeClient tweetspikeClient;
     private User user = null;
     Scanner input = new Scanner(System.in);
-    UserService us = new UserService(tweetspikeClient, input);
-    TweetspikeService ts = new TweetspikeService(tweetspikeClient, input);
+    UserService us;
+    TweetspikeService ts;
 
     public Tweetspike(String hostIP, int hostPort)
     {
         ClientPolicy cPolicy = new ClientPolicy();
         cPolicy.timeout = 500;
         tweetspikeClient = new AerospikeClient(cPolicy, hostIP, hostPort);
+        us = new UserService(tweetspikeClient, input);
+        ts = new TweetspikeService(tweetspikeClient, input);
     }
 
     public void menu()
@@ -58,10 +60,10 @@ public class Tweetspike {
                             break;
                     }
                 } else if(user == null) {
-                    System.out.print("[1]: Create a user account");
-                    System.out.print("[2]: Sign in");
-                    System.out.print("[3]: View a user profile");
-                    System.out.print("[4]: view a users tweets");
+                    System.out.print("[1]: Create a user account\n");
+                    System.out.print("[2]: Sign in\n");
+                    System.out.print("[3]: View a user profile\n");
+                    System.out.print("[4]: view a users tweets\n");
                     System.out.print("\nSelect 1-4 and hit enter: ");
 
                     int choice = input.nextInt();
@@ -70,6 +72,7 @@ public class Tweetspike {
                     switch (choice) {
                         case 1:
                             us.createUser();
+                            System.out.println("yo");
                             break;
                         case 2:
                             System.out.print("Enter a username: ");

@@ -94,8 +94,10 @@ public class UserService {
                 user.setRegion(userRecord.getString("region"));
                 user.setLastTweeted(userRecord.getLong("lasttweeted"));
                 user.setTweetCount(userRecord.getInt("tweetcount"));
+                System.out.print("good");
                 return user;
             } else {
+                System.out.println("bad");
                 return null;
             }
         } else {
