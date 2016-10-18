@@ -61,33 +61,24 @@ public class UserService {
         }
     }
 
-    public void getUser() throws AerospikeException {
+    public void getUser(String username) throws AerospikeException {
         Record userRecord = null;
         Key userKey = null;
 
-        // Get username
-        String username;
-        System.out.print("\nEnter username:");
-        username = input.nextLine();
-
-        if (username != null && username.length() > 0) {
-            // Check if username exists
-            userKey = new Key("test", "users", username);
-            userRecord = client.get(null, userKey);
-            if (userRecord != null) {
-                System.out.print("\nINFO: User record read successfully! Here are the details:\n");
-                System.out.print("Username:   " + userRecord.getValue("username") + "\n");
-                System.out.print("Gender:     " + userRecord.getValue("gender") + "\n");
-                System.out.print("Region:     " + userRecord.getValue("region") + "\n");
-                System.out.print("Last tweet  " + userRecord.getValue("lasttweeted") + "\n");
-                System.out.print("Tweet count: " + userRecord.getValue("tweetcount") + "\n");
-            } else {
-                System.out.print("ERROR: User record not found!\n");
-            }
+        userKey = new Key("test", "users", username);
+        userRecord = client.get(null, userKey);
+        if (userRecord != null) {
+            System.out.print("\nINFO: User record read successfully! Here are the details:\n");
+            System.out.print("Username:   " + userRecord.getValue("username") + "\n");
+            System.out.print("Gender:     " + userRecord.getValue("gender") + "\n");
+            System.out.print("Region:     " + userRecord.getValue("region") + "\n");
+            System.out.print("Last tweet  " + userRecord.getValue("lasttweeted") + "\n");
+            System.out.print("Tweet count: " + userRecord.getValue("tweetcount") + "\n");
         } else {
             System.out.print("ERROR: User record not found!\n");
         }
     }
+
 
 
 }

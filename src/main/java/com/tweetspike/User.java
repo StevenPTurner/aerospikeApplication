@@ -1,8 +1,5 @@
 package com.tweetspike;
 
-/**
- * Created by home on 18/10/2016.
- */
 public class User {
     String username;
     String gender;

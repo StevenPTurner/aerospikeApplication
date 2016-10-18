@@ -18,67 +18,54 @@ public class TweetspikeService {
         this.input = input;
     }
 
-    public void createTweet() throws AerospikeException, InterruptedException {
+    public void createTweet(User user) throws AerospikeException, InterruptedException {
 
         System.out.print("\n********** Create Tweet **********\n");
-
         Record userRecord = null;
         Key userKey = null;
         Key tweetKey = null;
 
-        // Get username
-        String username;
-        System.out.print("\nEnter username:");
-        username = input.nextLine();
+        // Check if username exists
+        userKey = new Key("test", "users", user.getUsername());
+        userRecord = client.get(null, userKey);
+        if (userRecord != null) {
+            int nextTweetCount = userRecord.getInt("tweetcount") + 1;
+            // Get tweet
+            String tweet;
+            System.out.print("Enter tweet for " + user.getUsername() + ":");
+            tweet = input.nextLine();
 
-        if (username != null && username.length() > 0) {
-            // Check if username exists
-            userKey = new Key("test", "users", username);
-            userRecord = client.get(null, userKey);
-            if (userRecord != null) {
-                int nextTweetCount = userRecord.getInt("tweetcount") + 1;
-                //nextTweetCount++;
-                System.out.println(nextTweetCount);
-                // Get tweet
-                String tweet;
-                System.out.print("Enter tweet for " + username + ":");
-                tweet = input.nextLine();
+            // Write record
+            WritePolicy wPolicy = new WritePolicy();
+            wPolicy.recordExistsAction = RecordExistsAction.UPDATE;
 
-                // Write record
-                WritePolicy wPolicy = new WritePolicy();
-                wPolicy.recordExistsAction = RecordExistsAction.UPDATE;
+            // Create timestamp to store along with the tweet so we can
+            // query, index and report on it
+            long timestamp = Instant.now().getEpochSecond();
 
-                // Create timestamp to store along with the tweet so we can
-                // query, index and report on it
-                long timestamp = Instant.now().getEpochSecond();
+            tweetKey = new Key("test", "tweets", user.getUsername() + ":" + nextTweetCount);
+            Bin bTweet = new Bin("tweet", tweet);
+            Bin bTimestamp = new Bin("timestamp", timestamp);
+            Bin bLastTweeted = new Bin("lasttweeted", timestamp);
+            Bin bUsername = new Bin("username", user.getUsername());
+            Bin bNextTweetCount = new Bin("tweetcount", nextTweetCount);
 
-                tweetKey = new Key("test", "tweets", username + ":" + nextTweetCount);
-                Bin bTweet = new Bin("tweet", tweet);
-                Bin bTimestamp = new Bin("timestamp", timestamp);
-                Bin bLastTweeted = new Bin("lasttweeted", timestamp);
-                Bin bUsername = new Bin("username", username);
-                Bin bNextTweetCount = new Bin("tweetcount", nextTweetCount);
+            client.put(wPolicy, tweetKey, bTweet, bTimestamp, bUsername);
+            System.out.print("\nINFO: Tweet record created!\n");
 
-                client.put(wPolicy, tweetKey, bTweet, bTimestamp, bUsername);
-                System.out.print("\nINFO: Tweet record created!\n");
-
-                // Update tweet count and last tweet'd timestamp in the user
-                // record
-                client.put(wPolicy, userKey, bLastTweeted, bNextTweetCount);
-            } else {
-               System.out.print("ERROR: User record not found!\n");
-            }
+            // Update tweet count and last tweet'd timestamp in the user
+            // record
+            client.put(wPolicy, userKey, bLastTweeted, bNextTweetCount);
+            user.setTweetCount(nextTweetCount);
+            user.setLastTweeted(timestamp);
+        } else {
+           System.out.print("ERROR: User record not found!\n");
         }
     }
 
-    public void batchGetUserTweets() throws AerospikeException {
+    public void batchGetUserTweets(String username) throws AerospikeException {
         Record userRecord = null;
         Key userKey = null;
-
-        // Get username
-        String username;
-        System.out.print("\nEnter username:");
-        username = input.nextLine();
 
         if (username != null && username.length() > 0) {
             // Check if username exists
