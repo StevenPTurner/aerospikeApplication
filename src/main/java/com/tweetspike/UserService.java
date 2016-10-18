@@ -61,7 +61,7 @@ public class UserService {
         }
     }
 
-    public void getUser(String username) throws AerospikeException {
+    public void printUser(String username) throws AerospikeException {
         Record userRecord = null;
         Key userKey = null;
 
@@ -76,6 +76,30 @@ public class UserService {
             System.out.print("Tweet count: " + userRecord.getValue("tweetcount") + "\n");
         } else {
             System.out.print("ERROR: User record not found!\n");
+        }
+    }
+
+    public User signIn(String username, String password) {
+        Record userRecord = null;
+        Key userKey = null;
+        User user = new User();
+
+        userKey = new Key("test", "users", username);
+        userRecord = client.get(null,userKey);
+        if(userRecord !=null)
+        {
+            if(PasswordHash.checkPassword(password, userRecord.getString("password"))) {
+                user.setUsername(userRecord.getString("username"));
+                user.setGender(userRecord.getString("gender"));
+                user.setRegion(userRecord.getString("region"));
+                user.setLastTweeted(userRecord.getLong("lasttweeted"));
+                user.setTweetCount(userRecord.getInt("tweetcount"));
+                return user;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
         }
     }
 

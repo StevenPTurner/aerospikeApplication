@@ -49,7 +49,7 @@ public class Tweetspike {
                             ts.createTweet(user);
                             break;
                         case 2:
-                            us.getUser(input.nextLine());
+                            us.printUser(input.nextLine());
                             break;
                         case 3:
                             ts.batchGetUserTweets(input.nextLine());
@@ -58,8 +58,8 @@ public class Tweetspike {
                             break;
                     }
                 } else if(user == null) {
-                    System.out.print("[1]: Sign in");
-                    System.out.print("[2]: Create a user account");
+                    System.out.print("[1]: Create a user account");
+                    System.out.print("[2]: Sign in");
                     System.out.print("[3]: View a user profile");
                     System.out.print("[4]: view a users tweets");
                     System.out.print("\nSelect 1-4 and hit enter: ");
@@ -69,11 +69,19 @@ public class Tweetspike {
 
                     switch (choice) {
                         case 1:
+                            us.createUser();
                             break;
                         case 2:
+                            System.out.print("Enter a username: ");
+                            String tempUsername = input.nextLine();
+
+                            System.out.print("Enter a password: ");
+                            String password = input.nextLine();
+
+                            user = us.signIn(tempUsername, password);
                             break;
                         case 3:
-                            us.getUser(input.nextLine());
+                            us.printUser(input.nextLine());
                             break;
                         case 4:
                             ts.batchGetUserTweets(input.nextLine());
