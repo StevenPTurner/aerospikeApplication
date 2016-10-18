@@ -10,6 +10,7 @@ import java.util.Scanner;
 //**
 public class Tweetspike {
     private AerospikeClient tweetspikeClient;
+    //private User
 
     public Tweetspike(String hostIP, int hostPort)
     {
@@ -114,6 +115,11 @@ public class Tweetspike {
             System.out.print("\n\nINFO: Press any key to exit...\n");
             //console.readLine();
         }
+    }
+
+    public void startMenu()
+    {
+
     }
 
     //Maybe pass parameters
