@@ -3,7 +3,7 @@ package com.tweetspike;
 
 public class TweetspikeMain
 {
-    String hostIP = "localhost";
+    String hostIP = "192.168.0.2";
     int hostPort = 3000;
     Tweetspike tweetSpike = new Tweetspike(hostIP, hostPort);
 
@@ -16,6 +16,4 @@ public class TweetspikeMain
         tweetSpike = new Tweetspike(hostIP, hostPort);
         tweetSpike.menu();
     }
-
-
 }

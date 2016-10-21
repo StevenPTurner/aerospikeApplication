@@ -16,32 +16,13 @@ public class UserService {
         this.input = input;
     }
 
-    public void createUser() throws AerospikeException {
+    public void createUser(String username, String password, String gender, String region) throws AerospikeException {
         System.out.print("\n********** Create User **********\n");
-
-        String username;
-        String password;
-        String gender;
-        String region;
-
-        // Get username
-        System.out.print("Enter username: ");
-        username = input.nextLine();
 
         if (username != null && username.length() > 0) {
             // Get password
-            System.out.print("Enter password for " + username + ":");
-            password = input.nextLine();
+
             String hashedPassword = PasswordHash.genHash(password, PasswordHash.genSalt());
-            
-            // Get gender
-            System.out.print("Select gender (f or m) for " + username + ":");
-            gender = input.nextLine().substring(0, 1);
-
-            // Get region
-            System.out.print("Select region (north, south, east or west) for " + username + ":");
-            region = input.nextLine().substring(0, 1);
-
 
             // Write record
             WritePolicy wPolicy = new WritePolicy();
@@ -83,24 +64,27 @@ public class UserService {
         Record userRecord = null;
         Key userKey = null;
         User user = new User();
+        int attempt = 0;
 
         userKey = new Key("test", "users", username);
         userRecord = client.get(null,userKey);
+
         if(userRecord !=null)
         {
-            if(PasswordHash.checkPassword(password, userRecord.getString("password"))) {
+            if (PasswordHash.checkPassword(password, userRecord.getString("password"))) {
                 user.setUsername(userRecord.getString("username"));
                 user.setGender(userRecord.getString("gender"));
                 user.setRegion(userRecord.getString("region"));
                 user.setLastTweeted(userRecord.getLong("lasttweeted"));
                 user.setTweetCount(userRecord.getInt("tweetcount"));
-                System.out.print("good");
+                System.out.print("Good Password");
                 return user;
             } else {
-                System.out.println("bad");
+                System.out.println("Bad Password");
                 return null;
             }
         } else {
+            System.out.println("User not found");
             return null;
         }
     }

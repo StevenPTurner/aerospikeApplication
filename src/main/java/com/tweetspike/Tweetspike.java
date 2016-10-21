@@ -28,9 +28,7 @@ public class Tweetspike {
     {
         try {
             System.out.println("INFO: Connecting to Aerospike cluster...");
-
             // Establish connection to Aerospike server
-
             if (tweetspikeClient == null || !tweetspikeClient.isConnected()) {
                 System.out.print("\nERROR: Connection to Aerospike cluster failed! Please check the server settings and try again!");
                 //console.readLine();
@@ -51,17 +49,20 @@ public class Tweetspike {
                             ts.createTweet(user);
                             break;
                         case 2:
+                            System.out.print("Please enter the account to print");
+                            us.printUser(input.nextLine());
                             us.printUser(input.nextLine());
                             break;
                         case 3:
+                            System.out.print("Enter the account's tweets to get");
                             ts.batchGetUserTweets(input.nextLine());
                             break;
                         default:
                             break;
                     }
                 } else if(user == null) {
-                    System.out.print("[1]: Create a user account\n");
-                    System.out.print("[2]: Sign in\n");
+                    System.out.print("[1]: Sign in\n");
+                    System.out.print("[2]: Create a user account\n");
                     System.out.print("[3]: View a user profile\n");
                     System.out.print("[4]: view a users tweets\n");
                     System.out.print("\nSelect 1-4 and hit enter: ");
@@ -71,22 +72,42 @@ public class Tweetspike {
 
                     switch (choice) {
                         case 1:
-                            us.createUser();
-                            System.out.println("yo");
+                            int attempt = 0;
+                            do{
+                                System.out.print("Enter a username: ");
+                                String tempUsername = input.nextLine();
+
+                                System.out.print("Enter a password: ");
+                                String password = input.nextLine();
+
+                                user = us.signIn(tempUsername, password);
+                                if (user == null) { attempt++; }
+                                if (attempt >=3) { System.out.println("ERROR: 3 attempt limit"); }
+
+                            } while(attempt <3 && user == null);
                             break;
                         case 2:
-                            System.out.print("Enter a username: ");
-                            String tempUsername = input.nextLine();
+                            System.out.print("\n********** Create User **********\n");
+                            System.out.print("Enter username: ");
+                            String username = input.nextLine();
 
-                            System.out.print("Enter a password: ");
+                            System.out.print("Enter password for " + username + ":");
                             String password = input.nextLine();
 
-                            user = us.signIn(tempUsername, password);
+                            System.out.print("Select gender (f or m) for " + username + ":");
+                            String gender = input.nextLine().substring(0, 1);
+
+                            System.out.print("Select region (north, south, east or west) for " + username + ":");
+                            String region = input.nextLine().substring(0, 1);
+
+                            us.createUser(username, password, gender, region);
                             break;
                         case 3:
+                            System.out.print("Please enter the account to print");
                             us.printUser(input.nextLine());
                             break;
                         case 4:
+                            System.out.print("Enter the account's tweets to get");
                             ts.batchGetUserTweets(input.nextLine());
                             break;
                         default:
