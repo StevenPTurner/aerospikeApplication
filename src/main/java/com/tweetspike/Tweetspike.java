@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class Tweetspike {
     private AerospikeClient tweetspikeClient;
     private User user = null;
+    private boolean exit = false;
     Scanner input = new Scanner(System.in);
     UserService us;
     TweetspikeService ts;
@@ -34,87 +35,96 @@ public class Tweetspike {
                 //console.readLine();
             } else {
                 System.out.print("\nINFO: Connection to Aerospike cluster succeeded!\n");
+                do {
+                    if (user != null) {
+                        System.out.println("[1]: Write a tweet");
+                        System.out.println("[2]: View a user profile");
+                        System.out.println("[3]: View a users tweets");
+                        System.out.println("[4]: Sign out");
+                        System.out.print("\nSelect 1-3 and hit enter: ");
 
-                if (user != null) {
-                    System.out.print("[1]: Write a tweet");
-                    System.out.print("[2]: View a user profile");
-                    System.out.print("[3]: View a users tweets");
-                    System.out.print("\nSelect 1-3 and hit enter: ");
+                        int choice = input.nextInt();
+                        input.nextLine();
 
-                    int choice = input.nextInt();
-                    input.nextLine();
+                        switch (choice) {
+                            case 1:
+                                ts.createTweet(user);
+                                break;
+                            case 2:
+                                System.out.print("Please enter the account to print");
+                                us.printUser(input.nextLine());
+                                break;
+                            case 3:
+                                System.out.print("Enter the account's tweets to get");
+                                ts.batchGetUserTweets(input.nextLine());
+                                break;
+                            case 4:
+                                user = null;
+                                System.out.print("User " + user.getUsername() + " signed out");
+                                break;
+                            default:
+                                break;
+                        }
+                    } else if(user == null) {
+                        System.out.print("[1]: Sign in\n");
+                        System.out.print("[2]: Create a user account\n");
+                        System.out.print("[3]: View a user profile\n");
+                        System.out.print("[4]: view a users tweets\n");
+                        System.out.print("[5]: To exit the program\n");
+                        System.out.print("\nSelect 1-4 and hit enter: ");
 
-                    switch (choice) {
-                        case 1:
-                            ts.createTweet(user);
-                            break;
-                        case 2:
-                            System.out.print("Please enter the account to print");
-                            us.printUser(input.nextLine());
-                            us.printUser(input.nextLine());
-                            break;
-                        case 3:
-                            System.out.print("Enter the account's tweets to get");
-                            ts.batchGetUserTweets(input.nextLine());
-                            break;
-                        default:
-                            break;
-                    }
-                } else if(user == null) {
-                    System.out.print("[1]: Sign in\n");
-                    System.out.print("[2]: Create a user account\n");
-                    System.out.print("[3]: View a user profile\n");
-                    System.out.print("[4]: view a users tweets\n");
-                    System.out.print("\nSelect 1-4 and hit enter: ");
+                        int choice = input.nextInt();
+                        input.nextLine();
 
-                    int choice = input.nextInt();
-                    input.nextLine();
+                        switch (choice) {
+                            case 1:
+                                int attempt = 0;
+                                do{
+                                    System.out.print("Enter a username: ");
+                                    String tempUsername = input.nextLine();
 
-                    switch (choice) {
-                        case 1:
-                            int attempt = 0;
-                            do{
-                                System.out.print("Enter a username: ");
-                                String tempUsername = input.nextLine();
+                                    System.out.print("Enter a password: ");
+                                    String password = input.nextLine();
 
-                                System.out.print("Enter a password: ");
+                                    user = us.signIn(tempUsername, password);
+                                    if (user == null) { attempt++; }
+                                    if (attempt >=3) { System.out.println("ERROR: 3 attempt limit"); }
+
+                                } while(attempt <3 && user == null);
+                                break;
+                            case 2:
+                                System.out.print("\n********** Create User **********\n");
+                                System.out.print("Enter username: ");
+                                String username = input.nextLine();
+
+                                System.out.print("Enter password for " + username + ":");
                                 String password = input.nextLine();
 
-                                user = us.signIn(tempUsername, password);
-                                if (user == null) { attempt++; }
-                                if (attempt >=3) { System.out.println("ERROR: 3 attempt limit"); }
+                                System.out.print("Select gender (f or m) for " + username + ":");
+                                String gender = input.nextLine().substring(0, 1);
 
-                            } while(attempt <3 && user == null);
-                            break;
-                        case 2:
-                            System.out.print("\n********** Create User **********\n");
-                            System.out.print("Enter username: ");
-                            String username = input.nextLine();
+                                System.out.print("Select region (north, south, east or west) for " + username + ":");
+                                String region = input.nextLine().substring(0, 1);
 
-                            System.out.print("Enter password for " + username + ":");
-                            String password = input.nextLine();
-
-                            System.out.print("Select gender (f or m) for " + username + ":");
-                            String gender = input.nextLine().substring(0, 1);
-
-                            System.out.print("Select region (north, south, east or west) for " + username + ":");
-                            String region = input.nextLine().substring(0, 1);
-
-                            us.createUser(username, password, gender, region);
-                            break;
-                        case 3:
-                            System.out.print("Please enter the account to print");
-                            us.printUser(input.nextLine());
-                            break;
-                        case 4:
-                            System.out.print("Enter the account's tweets to get");
-                            ts.batchGetUserTweets(input.nextLine());
-                            break;
-                        default:
-                            break;
+                                us.createUser(username, password, gender, region);
+                                break;
+                            case 3:
+                                System.out.print("Please enter the account to print");
+                                us.printUser(input.nextLine());
+                                break;
+                            case 4:
+                                System.out.print("Enter the account's tweets to get");
+                                ts.batchGetUserTweets(input.nextLine());
+                                break;
+                            case 5:
+                                System.out.print("Exiting Program");
+                                ts.batchGetUserTweets(input.nextLine());
+                                break;
+                            default:
+                                break;
+                        }
                     }
-                }
-
+                } while (exit == false);
 
                 // UtilityService util = new UtilityService(client);
                 // Present options
