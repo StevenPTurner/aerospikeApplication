@@ -82,7 +82,7 @@ public class TweetspikeService {
                     keys[i] = new Key("test", "tweets",(username + ":" + (i + 1)));
                 }
 
-                System.out.print("\nHere's " + username + "'s tweet(s):\n");
+                System.out.println("\n************ " + username + "'s Tweets ************");
 
                 BatchPolicy policy = new BatchPolicy();
                 // Initiate batch read operation

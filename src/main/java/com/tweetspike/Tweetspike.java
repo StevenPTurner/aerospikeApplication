@@ -37,6 +37,7 @@ public class Tweetspike {
                 System.out.print("\nINFO: Connection to Aerospike cluster succeeded!\n");
                 do {
                     if (user != null) {
+                        System.out.println("\n************ Menu ************");
                         System.out.println("[1]: Write a tweet");
                         System.out.println("[2]: View a user profile");
                         System.out.println("[3]: View a users tweets");
@@ -51,26 +52,27 @@ public class Tweetspike {
                                 ts.createTweet(user);
                                 break;
                             case 2:
-                                System.out.print("Please enter the account to print");
+                                System.out.print("\nPlease enter the account to print: ");
                                 us.printUser(input.nextLine());
                                 break;
                             case 3:
-                                System.out.print("Enter the account's tweets to get");
+                                System.out.print("\nEnter the account's tweets to get: ");
                                 ts.batchGetUserTweets(input.nextLine());
                                 break;
                             case 4:
-                                user = null;
                                 System.out.print("User " + user.getUsername() + " signed out");
+                                user = null;
                                 break;
                             default:
                                 break;
                         }
                     } else if(user == null) {
-                        System.out.print("[1]: Sign in\n");
-                        System.out.print("[2]: Create a user account\n");
-                        System.out.print("[3]: View a user profile\n");
-                        System.out.print("[4]: view a users tweets\n");
-                        System.out.print("[5]: To exit the program\n");
+                        System.out.println("\n************ Menu ************");
+                        System.out.println("[1]: Sign in");
+                        System.out.println("[2]: Create a user account");
+                        System.out.println("[3]: View a user profile");
+                        System.out.println("[4]: view a users tweets");
+                        System.out.println("[5]: To exit the program");
                         System.out.print("\nSelect 1-4 and hit enter: ");
 
                         int choice = input.nextInt();
@@ -93,7 +95,7 @@ public class Tweetspike {
                                 } while(attempt <3 && user == null);
                                 break;
                             case 2:
-                                System.out.print("\n********** Create User **********\n");
+                                System.out.println("\n********** Create User **********\n");
                                 System.out.print("Enter username: ");
                                 String username = input.nextLine();
 
@@ -109,11 +111,11 @@ public class Tweetspike {
                                 us.createUser(username, password, gender, region);
                                 break;
                             case 3:
-                                System.out.print("Please enter the account to print");
+                                System.out.print("\nPlease enter the account to print: ");
                                 us.printUser(input.nextLine());
                                 break;
                             case 4:
-                                System.out.print("Enter the account's tweets to get");
+                                System.out.print("\nEnter the account's tweets to get: ");
                                 ts.batchGetUserTweets(input.nextLine());
                                 break;
                             case 5:

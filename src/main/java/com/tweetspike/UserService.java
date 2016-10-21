@@ -49,11 +49,11 @@ public class UserService {
         userKey = new Key("test", "users", username);
         userRecord = client.get(null, userKey);
         if (userRecord != null) {
-            System.out.print("\nINFO: User record read successfully! Here are the details:\n");
-            System.out.print("Username:   " + userRecord.getValue("username") + "\n");
-            System.out.print("Gender:     " + userRecord.getValue("gender") + "\n");
-            System.out.print("Region:     " + userRecord.getValue("region") + "\n");
-            System.out.print("Last tweet  " + userRecord.getValue("lasttweeted") + "\n");
+            System.out.println("\n************ User Profile ************");
+            System.out.print("Username:    " + userRecord.getValue("username") + "\n");
+            System.out.print("Gender:      " + userRecord.getValue("gender") + "\n");
+            System.out.print("Region:      " + userRecord.getValue("region") + "\n");
+            System.out.print("Last tweet:  " + userRecord.getValue("lasttweeted") + "\n");
             System.out.print("Tweet count: " + userRecord.getValue("tweetcount") + "\n");
         } else {
             System.out.print("ERROR: User record not found!\n");
