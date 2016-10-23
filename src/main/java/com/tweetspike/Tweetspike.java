@@ -41,6 +41,7 @@ public class Tweetspike {
                         System.out.println("[1]: Write a tweet");
                         System.out.println("[2]: View a user profile");
                         System.out.println("[3]: View a users tweets");
+                        System.out.println("[4]: Change your password");
                         System.out.println("[4]: Sign out");
                         System.out.print("\nSelect 1-3 and hit enter: ");
 
@@ -60,6 +61,10 @@ public class Tweetspike {
                                 ts.batchGetUserTweets(input.nextLine());
                                 break;
                             case 4:
+                                us.updatePasswordUsingUDF(user.getUsername());
+                                user = null;
+                                break;
+                            case 5:
                                 System.out.print("User " + user.getUsername() + " signed out");
                                 user = null;
                                 break;

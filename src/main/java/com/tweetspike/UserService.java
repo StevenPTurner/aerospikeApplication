@@ -1,10 +1,13 @@
 package com.tweetspike;
 
 import com.aerospike.client.*;
+import com.aerospike.client.lua.LuaConfig;
 import com.aerospike.client.policy.RecordExistsAction;
 import com.aerospike.client.policy.WritePolicy;
+import com.aerospike.client.task.RegisterTask;
 import utilityMethods.PasswordHash;
 
+import java.io.File;
 import java.util.Scanner;
 
 public class UserService {
@@ -69,8 +72,7 @@ public class UserService {
         userKey = new Key("test", "users", username);
         userRecord = client.get(null,userKey);
 
-        if(userRecord !=null)
-        {
+        if(userRecord !=null) {
             if (PasswordHash.checkPassword(password, userRecord.getString("password"))) {
                 user.setUsername(userRecord.getString("username"));
                 user.setGender(userRecord.getString("gender"));
@@ -88,6 +90,42 @@ public class UserService {
             return null;
         }
     }
+
+
+    public void updatePasswordUsingUDF(String username) throws AerospikeException
+    {
+        Record userRecord = null;
+        Key userKey = null;
+
+        if (username != null && username.length() > 0)
+        {
+            // Check if username exists
+            userKey = new Key("test", "users", username);
+            userRecord = client.get(null, userKey);
+            if (userRecord != null)
+            {
+                // Get new password
+                String password;
+                System.out.print("\nEnter new password for " + username + ":");
+                password = input.nextLine();
+                String hashedPassword = PasswordHash.genHash(password, PasswordHash.genSalt());
+                LuaConfig.SourceDirectory = "udf";
+                File udfFile = new File("udf/updateUserPassword.lua");
+
+                RegisterTask rt = client.register(null, udfFile.getPath(), udfFile.getName(), Language.LUA);
+                rt.waitTillComplete(100);
+
+                String updatedPassword = client.execute(null, userKey, "updateUserPwd", "updatePassword", Value.get(hashedPassword)).toString();
+                System.out.print("\nINFO: The password has been set to: " + password);
+            } else {
+                System.out.print("ERROR: User record not found!");
+            }
+        }
+        else
+        {
+            System.out.print("ERROR: User record not found!");
+        }
+    } //updatePasswordUsingUDF
 
 
 
